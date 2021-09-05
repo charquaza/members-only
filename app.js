@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -7,6 +9,14 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 
 var app = express();
+
+//Set up mongoose connection
+var mongoose = require('mongoose');
+var mongoDB = process.env.MONGODB_URI || process.env.DEV_DB_URI;
+//need options object?
+mongoose.connect(mongoDB);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
