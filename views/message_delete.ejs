@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include('nav'); %>
+    
+    <h1><%= title %></h1>
+    <p>Are you sure you want to delete this message?</p>
+
+    <ul>
+        <li>Date: <%= message.timestamp %></li>
+        <li>Author: <%= message.author.username %></li>
+        <li>Title: <%= message.title %></li>
+        <li>Content: <%= message.content %></li>
+    </ul>
+
+    <form method='POST' action=''>
+      <button type='submit'>Delete</button>
+    </form>
+    
+    <a href='/'>Cancel</a>
+  </body>
+</html>

@@ -5,7 +5,50 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <%- include('nav'); %>
+    
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <% if (currentUser) { %>
+      <p>Weclome back, <%= currentUser.username %></p>
+    <% } %>
+
+    <h2>User Posts</h2>
+    <ul>
+      <% message_list.forEach(function (message) { %>
+        <li>
+          
+          <% if (currentUser && (currentUser.is_member || currentUser.is_admin)) { %>
+            <p>Date: <%= message.timestamp %></p>
+            <p>Author: <%= message.author.username %></p>
+          <% } %>
+
+          <p>Title: <%= message.title %></p>
+          <p>Content: <%= message.content %></p>
+
+          <% if (currentUser && currentUser.is_admin) { %>
+            <p><a href=<%= message.url + '/delete' %>>Delete Message</a></p>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+
+    <% if (currentUser) { %>
+      <p><a href='/message/create'>New Message</a></p>
+    <% } %>
+
+    <% if (currentUser) { %>
+      <p><a href='/log-out'>Log Out</a></p>
+    <% } else { %>
+      <a href='/sign-up'>Sign Up</a>
+      <a href='/log-in'>Log In</a>
+    <% } %>
+
+    <% if (currentUser && !currentUser.is_member) { %>
+      <p><a href='/join-club'>Join the Club!</a></p>
+    <% } %>
+
+    <% if (currentUser && !currentUser.is_admin) { %>
+      <p><a href='/admin'>Are you an admin?</a></p>
+    <% } %>
   </body>
 </html>

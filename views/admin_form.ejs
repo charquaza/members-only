@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include('nav'); %>
+
+    <h1><%= title %></h1>
+
+    <% if (!currentUser) { %>
+      <p>You must <a href='/log-in'>log in</a> first.</p>
+    <% } else if (currentUser.is_admin) { %>
+      <p>You are an admin.</p>
+    <% } else { %>
+      <form method='POST' action=''>
+        <label for='passcode'>Passcode: </label>
+        <input type='password' id='passcode' name='passcode' required maxlength='100'>
+
+        <button type='submit'>I am an admin</button>
+      </form>
+    <% } %>
+
+    <% if (locals.errors) { %>
+      <ul>
+        <% errors.forEach(function (error) { %>
+          <li><%= error.msg %></li>
+        <% }); %>
+      </ul>
+    <% } %>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include('nav'); %>
+
+    <h1><%= title %></h1>
+    <form method='POST' action=''>
+        <label for='username'>Username: </label>
+        <input type='text' id='username' name='username' required maxlength='100'>
+
+        <label for='password'>Password: </label>
+        <input type='password' id='password' name='password' required maxlength='100'>
+
+        <button type='submit'>Log In</button>
+    </form>
+
+    <% if (locals.error) { %>
+      <p><%= error %></p>
+    <% } %>
+  </body>
+</html>

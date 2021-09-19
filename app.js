@@ -10,13 +10,68 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 
-//Set up mongoose connection
+//set up mongoose connection
 var mongoose = require('mongoose');
 var mongoDB = process.env.MONGODB_URI || process.env.DEV_DB_URI;
-//need options object?
 mongoose.connect(mongoDB);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+/// Is this the best place to set up session and passport?
+
+//session setup
+var session = require('express-session');
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+
+//passport setup
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
+
+var bcrypt = require('bcryptjs');
+var User = require('./models/user');
+
+passport.use(
+  new LocalStrategy(function (username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) {
+        return done(err);
+      }
+
+      if (!user) {
+        return done(null, false, { message: 'Invalid credentials' });
+      }
+
+      bcrypt.compare(password, user.password, function (err, res) {
+        if (err) {
+          return done(err);
+        }
+
+        if (res) {
+          return done(null, user);
+        }
+
+        return done(null, false, { message: 'Invalid credentials' });
+      });
+    });
+  })
+);
+
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    if (err) {
+      return done(err);
+    }
+
+    return done(null, user);
+  });
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

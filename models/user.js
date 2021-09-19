@@ -3,11 +3,12 @@ var Schema = mongoose.Schema;
 
 var UserSchema = new Schema(
     {
-        first_name: { type: String, maxLength: 100, required },
-        last_name: { type: String, maxLength: 100, required },
-        username: { type: String, maxLength: 100, required },
-        password: { type: String, required },
-        is_member: { type: Boolean, required }
+        first_name: { type: String, maxLength: 100, required: true },
+        last_name: { type: String, maxLength: 100, required: true },
+        username: { type: String, maxLength: 100, required: true },
+        password: { type: String, required: true },
+        is_member: { type: Boolean, default: false },
+        is_admin: { type: Boolean, default: false }
     }
 );
 

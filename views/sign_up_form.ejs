@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include('nav'); %>
+
+    <h1><%= title %></h1>
+    <form method='POST' action=''>
+        <label for='first_name'>First Name: </label>
+        <input type='text' id='first_name' name='first_name' required maxlength='100'
+          value= <%= (locals.user) ? user.first_name : '' %>
+        >
+
+        <label for='last_name'>Last Name: </label>
+        <input type='text' id='last_name' name='last_name' required maxlength='100'
+          value= <%= (locals.user) ? user.last_name : '' %>
+        >
+
+        <label for='username'>Username: </label>
+        <input type='text' id='username' name='username' required maxlength='100'
+          value= <%= (locals.user) ? user.username : '' %>
+        >
+       
+        <label for='password'>Password: </label>
+        <input type='password' id='password' name='password' required maxlength='100'
+          value= <%= (locals.user) ? user.password : '' %>
+        >
+
+        <label for='confirm_password'>Confirm Password: </label>
+        <input type='password' id='confirm_password' name='confirm_password' required maxlength='100'>
+
+        <button type='submit'>Sign Up</button>
+    </form>
+
+    <% if (locals.errors) { %>
+      <ul>
+        <% errors.forEach(function (error) { %>
+          <li><%= error.msg %></li>
+        <% }); %>
+      </ul>
+    <% } %>
+  </body>
+</html>
