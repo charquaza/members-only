@@ -14,9 +14,6 @@ exports.sign_up_get = function (req, res, next) {
 };
 
 exports.sign_up_post = [
-    //sanitizing input - information stored is different from information user entered
-    //is this a problem? ex. password, username
-
     //validate and sanitize input
     body('first_name').trim().notEmpty().withMessage('First name must not be empty')
         .isLength({ max: 100 }).withMessage('First name must not be more than 100 characters')
