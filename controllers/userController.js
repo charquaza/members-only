@@ -14,7 +14,7 @@ exports.sign_up_get = function (req, res, next) {
 };
 
 exports.sign_up_post = [
-    //sanitizing input - information stored is different from information user enterred
+    //sanitizing input - information stored is different from information user entered
     //is this a problem? ex. password, username
 
     //validate and sanitize input
@@ -24,13 +24,13 @@ exports.sign_up_post = [
     body('last_name').trim().notEmpty().withMessage('Last name must not be empty')
         .isLength({ max: 100 }).withMessage('Last name must not be more than 100 characters')
         .escape(),
-    body('username').trim().notEmpty().withMessage('Username must not be empty')
+    body('username').notEmpty().withMessage('Username must not be empty')
         .isLength({ max: 100 }).withMessage('Username must not be more than 100 characters')
-        .escape(),
-    body('password').trim().notEmpty().withMessage('Password must not be empty')
+        .not().matches(/[<>&'"/]/).withMessage('Username must not contain the following characters: <, >, &, \', ", /'),
+    body('password').notEmpty().withMessage('Password must not be empty')
         .isLength({ max: 100 }).withMessage('Password must not be more than 100 characters')
-        .escape(),
-    body('confirm_password').trim().custom((value, { req }) => value === req.body.password)
+        .not().matches(/[<>&'"/]/).withMessage('Password must not contain the following characters: <, >, &, \', ", /'),
+    body('confirm_password').custom((value, { req }) => value === req.body.password)
         .withMessage('Passwords do not match')
         .escape(),
     
@@ -116,7 +116,7 @@ exports.join_club_get = function (req, res, next) {
 };
 
 exports.join_club_post = [
-    body('passcode').trim().custom(function (value) {
+    body('passcode').custom(function (value) {
             return value === process.env.MEMBER_PASSCODE;
         })
         .withMessage('Incorrect passcode').escape(),
@@ -143,7 +143,7 @@ exports.admin_get = function (req, res, next) {
 };
 
 exports.admin_post = [
-    body('passcode').trim().custom(function (value) {
+    body('passcode').custom(function (value) {
         return value === process.env.ADMIN_PASSCODE;
     })
     .withMessage('Incorrect passcode').escape(),

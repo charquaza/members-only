@@ -17,8 +17,6 @@ mongoose.connect(mongoDB);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-/// Is this the best place to set up session and passport?
-
 //session setup
 var session = require('express-session');
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));

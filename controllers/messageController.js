@@ -75,8 +75,7 @@ exports.message_delete_get = function (req, res, next) {
 };
 
 exports.message_delete_post = function (req, res, next) {
-    //req.params.id vs req.body.id (get id from form) - which is better?
-    Message.findByIdAndDelete(req.params.id, function (err) {
+    Message.findByIdAndDelete(req.body.id, function (err) {
         if (err) {
             return next(err);
         }
